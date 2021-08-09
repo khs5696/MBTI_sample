@@ -1,5 +1,23 @@
 const main = document.querySelector("#main");
 const qna = document.querySelector("#qna");
+const result = document.querySelector("#result");
+const endPoint = 12;
+
+function goResult() {
+    // QnA section 애니메이션
+    qna.style.WebkitAnimation = "fadeOut 1s";
+    qna.style.animation = "fadeOut 1s";
+
+    setTimeout(() => {
+        // result section 애니메이션
+        result.style.WebkitAnimation = "fadeOut 1s";
+        result.style.animation = "fadeOut 1s";
+        setTimeout(() => {
+            // QnA section 종료 & result section 등장
+            qna.style.display = "none";        
+            result.style.display = "block";   
+        }, 450)})
+    }
 
 function addAnswer(answerText, qIdx) {
     var a = document.querySelector('.answerBox');
@@ -29,11 +47,19 @@ function addAnswer(answerText, qIdx) {
 }
 
 function goNext(qIdx) {
+    // 마지막 질문 응답 완료 시, result section 이동
+    if (qIdx + 1 === endPoint) {
+        goResult();
+        return;
+    }
     var q = document.querySelector('.qBox');
     q.innerHTML = qnaList[qIdx].q;
     for(let i in qnaList[qIdx].a) {
         addAnswer(qnaList[qIdx].a[i].answer, qIdx);
     }
+
+    var status = document.querySelector('.statusBar');
+    status.style.width = (100/endPoint) * (qIdx+1) + '%';
 }
 
 function begin(){
